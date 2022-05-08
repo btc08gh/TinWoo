@@ -144,7 +144,7 @@ namespace netInstStuff{
                 inst::ui::instPage::setTopInstInfoText("inst.info_page.top_info0"_lang + urlNames[urlItr] + ourSource);
                 std::unique_ptr<tin::install::Install> installTask;
 
-                if (inst::curl::downloadToBuffer(ourUrlList[urlItr], 0x100, 0x103) == "HEAD") {
+                if (inst::curl::downloadToBuffer(ourUrlList[urlItr]) == "HEAD") {
                     auto httpXCI = std::make_shared<tin::install::xci::HTTPXCI>(ourUrlList[urlItr]);
                     installTask = std::make_unique<tin::install::xci::XCIInstallTask>(m_destStorageId, inst::config::ignoreReqVers, httpXCI);
                 } else {
@@ -301,11 +301,13 @@ namespace netInstStuff{
                     
 
                       std::string response;
+                      std::string extension;
                       if (inst::util::formatUrlString(url) == "" || url == "https://" || url == "http://")
                           inst::ui::mainApp->CreateShowDialog("inst.net.url.invalid"_lang, "", {"common.ok"_lang}, false);
                       else {
                           if (url[url.size() - 1] != '/')
                               url += '/';
+			  url = url + "index.php?tinfoil";
                           response = inst::curl::downloadToBuffer(url);
                       }
 
@@ -334,14 +336,8 @@ namespace netInstStuff{
                                   while (index < response.size()) {
                                       if (response[index] == '"') {
                                           if (link.find("../") == std::string::npos)
-                                              if (link.find(".nsp") != std::string::npos || link.find(".nsz") != std::string::npos || link.find(".xci") != std::string::npos || link.find(".xcz") != std::string::npos){
-                                              	if (inst::config::useoldphp) {
-                                              		urls.push_back(url + link);
-                                              	}
-                                              	else {
-                                              		urls.push_back(link);
-                                              	}
-                                              }
+                                              if (link.find(".nsp") != std::string::npos || link.find(".nsz") != std::string::npos || link.find(".xci") != std::string::npos || link.find(".xcz") != std::string::npos)
+												urls.push_back(url + link);  
                                           break;
                                       }
                                       link += response[index++];

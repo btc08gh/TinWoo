@@ -18,7 +18,6 @@ namespace inst::config {
     bool useSound;
     bool usbAck;
     bool validateNCAs;
-    bool useoldphp;
 
     void setConfig() {
         nlohmann::json j = {
@@ -34,8 +33,7 @@ namespace inst::config {
             {"usbAck", usbAck},
             {"validateNCAs", validateNCAs},
             {"httpIndexUrl", httpIndexUrl},
-            {"httplastUrl", httplastUrl},
-            {"httpoldphp", useoldphp}
+            {"httplastUrl", httplastUrl}
         };
         std::ofstream file(inst::config::configPath);
         file << std::setw(4) << j << std::endl;
@@ -47,7 +45,6 @@ namespace inst::config {
             nlohmann::json j;
             file >> j;
             autoUpdate = j["autoUpdate"].get<bool>();
-            useoldphp = j["httpoldphp"].get<bool>();
             deletePrompt = j["deletePrompt"].get<bool>();
             gAuthKey = j["gAuthKey"].get<std::string>();
             gayMode = j["gayMode"].get<bool>();
@@ -72,7 +69,6 @@ namespace inst::config {
             deletePrompt = true;
             gayMode = false;
             useSound = false;
-            useoldphp = false;
             ignoreReqVers = true;
             overClock = false;
             usbAck = false;

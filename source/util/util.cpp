@@ -303,7 +303,7 @@ namespace inst::util {
    std::vector<std::string> checkForAppUpdate() {
         try {
         		std::string giturl = "https://api.github.com/repos/mrdude2478/TinWoo/releases/latest";
-            std::string jsonData = inst::curl::downloadToBuffer(giturl, 0, 0, 1000L);
+            std::string jsonData = inst::curl::downloadToBuffer(giturl, 1000L);
             if (jsonData.size() == 0) return {};
             nlohmann::json ourJson = nlohmann::json::parse(jsonData);
             if (ourJson["tag_name"].get<std::string>() != inst::config::appVersion) {

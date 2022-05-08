@@ -65,7 +65,7 @@ namespace inst::curl {
         }
     }
 
-    std::string downloadToBuffer (const std::string ourUrl, int firstRange, int secondRange, long timeout) {
+    std::string downloadToBuffer (const std::string ourUrl, long timeout) {
         CURL *curl_handle;
         CURLcode result;
         std::ostringstream stream;
@@ -82,11 +82,6 @@ namespace inst::curl {
         curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT_MS, timeout);
         curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout);
         curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, writeDataBuffer);
-        if (firstRange && secondRange) {
-            const char * ourRange = (std::to_string(firstRange) + "-" + std::to_string(secondRange)).c_str();
-            curl_easy_setopt(curl_handle, CURLOPT_RANGE, ourRange);
-        }
-        
         curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, &stream);
         result = curl_easy_perform(curl_handle);
         

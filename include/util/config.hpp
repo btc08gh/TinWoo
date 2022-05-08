@@ -21,7 +21,6 @@ namespace inst::config {
     extern bool usbAck;
     extern bool gayMode;
     extern bool useSound;
-    extern bool useoldphp;
 
     void setConfig();
     void parseConfig();
